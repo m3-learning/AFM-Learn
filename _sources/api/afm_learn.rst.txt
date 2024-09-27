@@ -1,0 +1,21 @@
+afm\_learn package
+==================
+
+Submodules
+----------
+
+afm\_learn.skeleton module
+--------------------------
+
+.. automodule:: afm_learn.skeleton
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: afm_learn
+   :members:
+   :undoc-members:
+   :show-inheritance:

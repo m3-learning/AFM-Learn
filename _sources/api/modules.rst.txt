@@ -1,0 +1,7 @@
+afm_learn
+=========
+
+.. toctree::
+   :maxdepth: 4
+
+   afm_learn
