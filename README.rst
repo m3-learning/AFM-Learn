@@ -34,11 +34,19 @@ AFM-Learn
 =========
 
 
-    Add a short description here!
+    A Python package for visualizing and analyzing Atomic Force Microscopy(AFM) and Piezoelectric Force Microscopy(PFM) experimental data, offering tools to process, visualize, and extract meaningful insights from AFM images and measurements.
 
 
-A longer description of your project goes here...
+This Python package provides a suite of tools for the visualization and analysis of Atomic Force Microscopy (AFM) experimental data. Designed for researchers working with AFM techniques, the package simplifies the processing of raw AFM data, including height, amplitude, and phase images. The built-in functionality allows users to visualize AFM scans in image and video if temporal dependent data, apply filters for noise reduction, and extract key metrics such as roughness, feature dimensions, and ferroelectric domain structures.
 
+Key features include:
+
+- Support for AFM data formats (e.g., .ibw).
+- Convenient image and video visualization of AFM data.
+- Data filtering and smoothing techniques.
+- Customizable functions for ferroelectric domain structure analysis.
+
+This package is particularly useful for materials science researchers and AFM users who want to streamline data processing and explore advanced data processing and analysis.
 
 .. _pyscaffold-notes:
 
