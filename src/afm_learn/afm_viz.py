@@ -1,15 +1,13 @@
-import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import plotly.graph_objects as go
 import seaborn as sns
 import pandas as pd
+from m3util.viz.layout import scalebar
 
 from .afm_utils import convert_with_unit, convert_scan_setting, format_func
-from PFM.domain_analysis import find_histogram_peaks
-sys.path.append('../../../py-utils/src/')
-from viz import scalebar
+from .domain_analysis import find_histogram_peaks
 
 def visualize_afm_image(img, scan_size, sample_name,
                         colorbar_setting={'colorbar_setting': 'percent', 'colorbar_range': (0.2, 0.98)}, 
