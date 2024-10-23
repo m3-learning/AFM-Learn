@@ -1,10 +1,10 @@
-import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import plotly.graph_objects as go
 import seaborn as sns
 import pandas as pd
+from m3util.viz.layout import scalebar
 
 from afm_learn.afm_utils import convert_with_unit, convert_scan_setting, format_func
 from afm_learn.domain_analysis import find_histogram_peaks
