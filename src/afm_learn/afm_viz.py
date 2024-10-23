@@ -6,10 +6,9 @@ import plotly.graph_objects as go
 import seaborn as sns
 import pandas as pd
 
-from .afm_utils import convert_with_unit, convert_scan_setting, format_func
-from PFM.domain_analysis import find_histogram_peaks
-sys.path.append('../../../py-utils/src/')
-from viz import scalebar
+from afm_learn.afm_utils import convert_with_unit, convert_scan_setting, format_func
+from afm_learn.domain_analysis import find_histogram_peaks
+from m3util.viz.layout import scalebar
 
 def visualize_afm_image(img, scan_size, sample_name,
                         colorbar_setting={'colorbar_setting': 'percent', 'colorbar_range': (0.2, 0.98)}, 
