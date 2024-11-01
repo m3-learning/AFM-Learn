@@ -5,10 +5,8 @@ import plotly.graph_objects as go
 import seaborn as sns
 import pandas as pd
 from m3util.viz.layout import scalebar
-
 from afm_learn.afm_utils import convert_with_unit, convert_scan_setting, format_func
 from afm_learn.domain_analysis import find_histogram_peaks
-from m3util.viz.layout import scalebar
 
 def visualize_afm_image(img, scan_size, sample_name,
                         colorbar_setting={'colorbar_setting': 'percent', 'colorbar_range': (0.2, 0.98)}, 
@@ -110,7 +108,6 @@ def visualize_afm_image(img, scan_size, sample_name,
         plt.show()
 
 
-
 def show_peaks(x, z, peaks=None, valleys=None):
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=x, y=z, mode='lines+markers', name='Original Plot'))
@@ -153,7 +150,6 @@ def df_scatter(df1, df2, xaxis, yaxis, label_with, style, start_0 = (False, Fals
            plt.ylim(bottom=1)
 
     plt.show()
-
 
 
 def violinplot_roughness(RMS_dict):
