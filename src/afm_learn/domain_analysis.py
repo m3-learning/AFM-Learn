@@ -3,7 +3,7 @@ import numpy as np
 from scipy.signal import find_peaks
 import matplotlib.pyplot as plt
 import plotly.express as px
-from plume_learn.viz import show_images
+from plume_learn.plume_utils.viz import show_images
 
 def domain_rule(images_binary_dict, viz=False):
     shape = images_binary_dict['LatAmplitude'].shape
