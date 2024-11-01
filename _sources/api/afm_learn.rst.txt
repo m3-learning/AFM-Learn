@@ -44,6 +44,14 @@ afm\_learn.domain\_analysis module
    :undoc-members:
    :show-inheritance:
 
+afm\_learn.drawing\_3d module
+-----------------------------
+
+.. automodule:: afm_learn.drawing_3d
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 afm\_learn.skeleton module
 --------------------------
 
