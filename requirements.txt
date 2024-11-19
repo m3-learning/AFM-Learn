@@ -6,3 +6,5 @@ sphinx>=3.2.1
 pydata-sphinx-theme
 M3Learning-Util
 mayavi
+numpy
+matplotlib

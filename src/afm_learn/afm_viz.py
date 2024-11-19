@@ -4,108 +4,141 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import plotly.graph_objects as go
 import seaborn as sns
 import pandas as pd
+from scipy.stats import median_abs_deviation
+
 from m3util.viz.layout import scalebar
-from afm_learn.afm_utils import convert_with_unit, convert_scan_setting, format_func
+from afm_learn.afm_utils import convert_with_unit, convert_scan_setting, format_func, show_image_stats
 from afm_learn.domain_analysis import find_histogram_peaks
 
-def visualize_afm_image(img, scan_size, sample_name,
-                        colorbar_setting={'colorbar_setting': 'percent', 'colorbar_range': (0.2, 0.98)}, 
-                        filename=None, fig=None, ax=None, figsize=(6, 4), title=None, 
-                        zero_mean=False, save_plot=True, debug=False, printing=None):
-    
-    """
-    Visualize AFM image with scalebar and colorbar.
 
-    Parameters:
-    -----------
-    img : 2D numpy array
-        AFM image.
-    colorbar_setting['colorbar_range'] : tuple, optional
-        Range of colorbar. Default is (0.2, 0.98).
-    colorbar_range['colorbar_type'] : str, optional
-        Type of colorbar scaling ('percent', 'value', 'adaptive').
-    figsize : tuple, optional
-        Size of the figure. Default is (6, 4).
-    scalebar_setting : dict, optional
-        Dictionary of scalebar parameters.
-    filename : str, optional
-        Filename to save the image.
-    printing : object, optional
-        Printing object for saving the figure.
-    ax : matplotlib.axes.Axes, optional
-        Axis to plot on.
-    fig : matplotlib.figure.Figure, optional
-        Figure object.
-    title : str, optional
-        Title of the plot.
-    units : str, optional
-        Units for the colorbar (default: 'm').
-    zero_mean : bool, optional
-        Whether to subtract the mean from the image.
-    show_plot : bool, optional
-        Whether to show the plot.
-    save_plot : bool, optional
-        Whether to save the plot.
-    debug : bool, optional
-        If true, provides debug information for histogram peaks adjustment.
+class AFMVisualizer:
+    def __init__(self, colorbar_setting={'colorbar_type': 'percent', 'colorbar_range': (0.2, 0.98), 'outliers_std': 3, 'symmetric_clim':True, 'visible': True}, zero_mean=False, scalebar=True, debug=False):
+        
+        self.colorbar_setting = colorbar_setting
+        self.zero_mean = zero_mean
+        self.scalebar = scalebar
+        self.debug = debug
+            
+    def add_colorbar(self, img, im, fig, ax, unit="nm"):
 
-    Returns:
-    --------
-    fig, ax : Figure and Axes objects.
-    """
-
-    if zero_mean:
-        if colorbar_setting['colorbar_type'] == 'percent':
-            # Find histogram peaks and adjust image
-            peaks, counts = find_histogram_peaks(img, num_peaks=1, distance=1, debug=debug)
-            height_norm = img - peaks[0]
-            peaks, counts = find_histogram_peaks(height_norm, num_peaks=1, distance=1, debug=debug)
-            img = height_norm - peaks[0]
+        # Handle outliers: Clip to mean ± n_std * std
+        if self.colorbar_setting.get('outliers_std', None):  # Ensure key exists
+            img = img.copy()
+            
+            
+            # show_image_stats(img, n_std_list=[1,2,3], bins=100)
+            
+            # mean_val = np.mean(img)
+            # std_val = np.std(img)
+            # lower_bound = mean_val - self.colorbar_setting['outliers_std'] * std_val
+            # upper_bound = mean_val + self.colorbar_setting['outliers_std'] * std_val
+            # img = np.clip(img, lower_bound, upper_bound)
+            # img -= np.mean(img) # Recenter the image around 0 for balanced clim
+                
+            median_val = np.median(img)
+            mad_val = median_abs_deviation(img)
+            lower_bound = median_val - self.colorbar_setting['outliers_std'] * mad_val
+            upper_bound = median_val + self.colorbar_setting['outliers_std'] * mad_val
+            img = np.clip(img, lower_bound, upper_bound)
+            img -= np.median(img)
+                    
+            # show_image_stats(img, n_std_list=[1,2,3], bins=100)
+                    
+        # Set color limits based on colorbar type
+        if self.colorbar_setting['colorbar_type'] == None:
+            raise ValueError("Colorbar type must be specified.")
+        
+        elif self.colorbar_setting['colorbar_type'] == 'percent':
+            vmin, vmax = np.percentile(img, self.colorbar_setting['colorbar_range'])
+            if self.colorbar_setting['symmetric_clim']:
+                absmax = np.max(np.abs([vmin, vmax]))
+                vmin, vmax = -absmax, absmax
+            im.set_clim(vmin, vmax)
+            
+        elif self.colorbar_setting['colorbar_type'] == 'value':
+            im.set_clim(self.colorbar_setting['colorbar_range'])
+            
+        elif self.colorbar_setting['colorbar_type'] == 'adaptive':
+            n_std = self.colorbar_setting['colorbar_range']
+            vmin, vmax = np.mean(img) - n_std[0]*np.std(img), np.mean(img) + n_std[1]*np.std(img)
+            im.set_clim(vmin, vmax)
+            
+        elif self.colorbar_setting['colorbar_type'] == 'minmax':
+            im.set_clim(np.min(img), np.max(img))
+            
         else:
-            img -= np.mean(img)
+            if isinstance(self.colorbar_setting['colorbar_range'], (tuple, list)):
+                im.set_clim(self.colorbar_setting['colorbar_range'])
 
-    if ax is None or fig is None:
-        fig, ax = plt.subplots(1, 1, figsize=figsize)
+        if self.colorbar_setting['visible']:
+            # Add colorbar to the figure
+            divider = make_axes_locatable(ax)
+            cax = divider.append_axes("right", size="5%", pad=0.05)
+            formatter = plt.FuncFormatter(format_func)
+            colorbar = fig.colorbar(im, cax=cax, format=formatter)
+            
+            # Adjust tick padding
+            colorbar.ax.yaxis.set_tick_params(pad=-2.2, labelsize=7, right=False)  # Adjust spacing between ticks and labels
+            # colorbar.ax.tick_params(direction='in', width=1)
 
-    im = ax.imshow(img)
+            # Set unit label at the top of the colorbar
+            cax.set_title(unit, loc='center', pad=1, fontsize=7)  # Adjust fontsize as needed
+            
 
-    if not isinstance(scan_size, dict):
-        scan_size = convert_scan_setting(scan_size)
-    scalebar(ax, image_size=scan_size['image_size'], scale_size=scan_size['scale_size'], units=scan_size['units'], loc='br')
 
-    if colorbar_setting['colorbar_type'] == 'percent':
-        vmin, vmax = np.percentile(img, colorbar_setting['colorbar_range'])
-        im.set_clim(vmin, vmax)
-    elif colorbar_setting['colorbar_type'] == 'value':
-        im.set_clim(colorbar_setting['colorbar_range'])
-    elif colorbar_setting['colorbar_type'] == 'adaptive':
-        im.set_clim(np.min(img), np.max(img))
-    else:
-        if isinstance(colorbar_setting['colorbar_range'], (tuple, list)):
-            im.set_clim(colorbar_setting['colorbar_range'])
 
-    divider = make_axes_locatable(ax)
-    cax = divider.append_axes("right", size="5%", pad=0.05)
+    def adjust_ticks(self, ax):
+        # Remove axis ticks and labels
+        ax.tick_params(which='both', bottom=False, left=False, right=False, top=False, labelbottom=False)
+        ax.axes.xaxis.set_ticklabels([])
+        ax.axes.yaxis.set_ticklabels([])
 
-    # Apply the dynamic formatter to the colorbar
-    formatter = plt.FuncFormatter(format_func)
-    fig.colorbar(im, cax=cax, format=formatter)
+    def preprocess_image(self, img):
+        # Adjust image based on zero_mean and colorbar settings
+        if self.zero_mean:
+            if self.colorbar_setting['colorbar_type'] == 'percent':
+                peaks, counts = find_histogram_peaks(img, num_peaks=1, distance=1, debug=self.debug)
+                height_norm = img - peaks[0]
+                peaks, counts = find_histogram_peaks(height_norm, num_peaks=1, distance=1, debug=self.debug)
+                img = height_norm - peaks[0]
+            else:
+                img -= np.mean(img)
+        return img
+
+    def viz(self, img, scan_size, fig=None, ax=None, figsize=(6, 4), title=None):
+        
+        # Preprocess image if needed
+        img = self.preprocess_image(img)
+
+        # Set up figure and axis if not provided
+        if ax is None or fig is None:
+            fig, ax = plt.subplots(1, 1, figsize=figsize)
+
+        im = ax.imshow(img)
+
+        # Convert scan size if necessary and add scalebar
+        if self.scalebar:
+            if not isinstance(scan_size, dict):
+                scan_size = convert_scan_setting(scan_size)
+            scalebar(ax, image_size=scan_size['image_size'], scale_size=scan_size['scale_size'], units=scan_size['units'], loc='br')
     
-    ax.tick_params(which='both', bottom=False, left=False, right=False, top=False, labelbottom=False)
-    ax.axes.xaxis.set_ticklabels([])
-    ax.axes.yaxis.set_ticklabels([])
-    
-    if title:
-        ax.set_title(title)
-    elif sample_name:
-        ax.set_title(f'Scan Result of {sample_name}')
+        # Add colorbar
+        if self.colorbar_setting['colorbar_type'] != None:
+            self.add_colorbar(img, im, fig, ax)
 
-    if save_plot and printing is not None and filename is not None:
-        printing.savefig(fig, filename)
+        # Adjust ticks and labels
+        self.adjust_ticks(ax)
 
-    if ax is None:
-        plt.tight_layout()
-        plt.show()
+        # Set title
+        if title:
+            ax.set_title(title)
+
+        if fig is None and ax is None:
+            plt.tight_layout()
+            plt.show()
+        
+        return fig, ax
+
 
 
 def show_peaks(x, z, peaks=None, valleys=None):

@@ -1,6 +1,8 @@
 import re
 import numpy as np
 from igor import binarywave, igorpy
+from matplotlib import pyplot as plt
+
     
 def parse_ibw(file, mode=None):
 
@@ -94,7 +96,7 @@ def convert_scan_setting(scan_size):
         (3e-6, 1e-5, {'scale_size': 1, 'units': 'µm'}), # 3-10 um
         (2e-6, 3e-6, {'scale_size': 500, 'units': 'nm'}), # 2-3 um
         (1e-6, 2e-6, {'scale_size': 200, 'units': 'nm'}), # 1-2 um
-        (5e-7, 1e-6, {'scale_size': 100, 'units': 'nm'}), # 0.5-1 um
+        (5e-7, 1e-6, {'scale_size': 100, 'units': 'nm'}), # 0.1-1 um
         (2e-7, 5e-7, {'scale_size': 50, 'units': 'nm'}), # 200-500 nm
         (1e-7, 2e-7, {'scale_size': 20, 'units': 'nm'}), # 100-200 nm
         (5e-8, 1e-7, {'scale_size': 10, 'units': 'nm'}), # 50-100 nm
@@ -105,7 +107,7 @@ def convert_scan_setting(scan_size):
         (3e-9, 5e-9, {'scale_size': 500, 'units': 'pm'}), # 3-5 nm
         (2e-9, 3e-9, {'scale_size': 300, 'units': 'pm'}), # 2-3 nm
         (1e-9, 2e-9, {'scale_size': 200, 'units': 'pm'}), # 1-2 nm
-        (5e-10, 1e-9, {'scale_size': 100, 'units': 'pm'}), # 0.5-1 nm
+        (5e-10, 1e-9, {'scale_size': 100, 'units': 'pm'}), # 0.1-1 nm
         (3e-10, 5e-10, {'scale_size': 50, 'units': 'pm'}), # 300-500 pm
         (2e-10, 3e-10, {'scale_size': 30, 'units': 'pm'}), # 200-300 pm
         (1e-10, 2e-10, {'scale_size': 20, 'units': 'pm'}), # 100-200 pm
@@ -152,28 +154,76 @@ def flexible_round(value, sig_digits=1):
     return rounded_value
 
     
-    
 def format_func(value, tick_number=None):
     """
-    Format the colorbar ticks based on the magnitude of the value.
-    Dynamically adjust the unit to keep the values readable.
+    Format the colorbar ticks to only display numeric values without units.
+    Dynamically adjust the scale of values based on magnitude.
     """
-
     value = flexible_round(value)
     
+    # Format based on magnitude without units
     if abs(value) >= 1:
-        return f'{value:.1e} m'
-    elif 1e-3 <= abs(value) <= 1:
-        return f'{value*1e3:.1f} mm'
-    elif 1e-6 <= abs(value) <= 1e-3:
-        return f'{value*1e6:.1f} µm'
-    elif 1e-9 <= abs(value) <= 1e-6:
-        return f'{value*1e9:.1f} nm'
-    elif 1e-12 <= abs(value) <= 1e-9:
-        return f'{value*1e12:.1f} pm'
-    elif 1e-15 <= abs(value) <= 1e-12:
-        return f'{value*1e15:.1f} fm'
+        return f'{value:.1e}'
+    elif 1e-3 <= abs(value) < 1:
+        scaled_value = value * 1e3
+        return f'{scaled_value:.1f}' if scaled_value % 1 != 0 else f'{int(scaled_value)}'
+    elif 0.1e-6 <= abs(value) < 0.1e-3:
+        scaled_value = value * 1e6
+        return f'{scaled_value:.1f}' if scaled_value % 1 != 0 else f'{int(scaled_value)}'
+    elif 0.1e-9 <= abs(value) < 1e-6:
+        scaled_value = value * 1e9
+        return f'{scaled_value:.1f}' if scaled_value % 1 != 0 else f'{int(scaled_value)}'
+    elif 0.1e-12 <= abs(value) < 0.1e-9:
+        scaled_value = value * 1e12
+        return f'{scaled_value:.1f}' if scaled_value % 1 != 0 else f'{int(scaled_value)}'
+    elif 0.1e-15 <= abs(value) < 0.1e-12:
+        scaled_value = value * 1e15
+        return f'{scaled_value:.1f}' if scaled_value % 1 != 0 else f'{int(scaled_value)}'
     else:
-        return f'{value:.1f}'
-        # for extremely small values
-            
+        return f'{value:.1f}' if value % 1 != 0 else f'{int(value)}'
+
+
+def show_image_stats(image, n_std_list=[1,2,3], bins=100):
+    """
+    Display the histogram of an image with lines showing mean ± n_std*std for multiple values of n_std.
+    
+    Parameters:
+    -----------
+    image : numpy array
+        The input image (2D or 3D for RGB, automatically flattened for the histogram).
+    n_std_list : list of int or float, optional
+        List of multipliers for standard deviation to show as vertical lines (default is [1, 2]).
+    bins : int, optional
+        Number of bins to use for the histogram (default is 50).
+    """
+    # Flatten the image to get pixel values for the histogram
+    if image.ndim == 3:  # Convert RGB to grayscale
+        image = np.mean(image, axis=-1)
+    pixel_values = image.flatten()
+    
+    # Calculate mean and std
+    mean_val = np.mean(pixel_values)
+    std_val = np.std(pixel_values)
+
+    # Plot the histogram
+    plt.figure(figsize=(8, 3))
+    plt.hist(pixel_values, bins=bins, color='gray', alpha=0.7, edgecolor='black')
+    
+    # Plot mean and ±n_std lines for each value in n_std_list
+    for n_std in n_std_list:
+        lower_bound = mean_val - n_std * std_val
+        upper_bound = mean_val + n_std * std_val
+        plt.axvline(lower_bound, color='blue', linestyle='--', label=f'Mean - {n_std}*Std: {lower_bound:.2e}')
+        plt.axvline(upper_bound, color='green', linestyle='--', label=f'Mean + {n_std}*Std: {upper_bound:.2e}')
+    
+    # Plot the mean line
+    plt.axvline(mean_val, color='red', linestyle='-', label=f'Mean: {mean_val:.2e}')
+    
+    # Labeling
+    plt.title("Image Histogram with Mean ± Multiple Std Lines", fontsize=12)
+    plt.xlabel("Pixel Intensity", fontsize=10)
+    plt.ylabel("Frequency", fontsize=10)
+    plt.legend()
+    plt.grid(alpha=0.3)
+    plt.show()
+
