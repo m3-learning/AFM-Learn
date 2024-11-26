@@ -48,7 +48,7 @@
     <link rel="prev" title="afm_learn" href="modules.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.0.post1.dev1+ga5bc8e3" />
+  <meta name="docsearch:version" content="0.0.post1.dev1+gf3ebc9c" />
     <meta name="docbuild:last-update" content="Nov 26, 2024"/>
   </head>
   
@@ -499,8 +499,106 @@
 <section id="afm-learn-afm-viz-module">
 <h2>afm_learn.afm_viz module<a class="headerlink" href="#afm-learn-afm-viz-module" title="Link to this heading">#</a></h2>
 </section>
-<section id="afm-learn-domain-analysis-module">
-<h2>afm_learn.domain_analysis module<a class="headerlink" href="#afm-learn-domain-analysis-module" title="Link to this heading">#</a></h2>
+<section id="module-afm_learn.domain_analysis">
+<span id="afm-learn-domain-analysis-module"></span><h2>afm_learn.domain_analysis module<a class="headerlink" href="#module-afm_learn.domain_analysis" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="afm_learn.domain_analysis.convert_binary">
+<span class="sig-prename descclassname"><span class="pre">afm_learn.domain_analysis.</span></span><span class="sig-name descname"><span class="pre">convert_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">real_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/afm_learn/domain_analysis.html#convert_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#afm_learn.domain_analysis.convert_binary" title="Link to this definition">#</a></dt>
+<dd><p>convert image to binary color blocks based on the color threshold.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="afm_learn.domain_analysis.crop_image">
+<span class="sig-prename descclassname"><span class="pre">afm_learn.domain_analysis.</span></span><span class="sig-name descname"><span class="pre">crop_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cropx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cropy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/afm_learn/domain_analysis.html#crop_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#afm_learn.domain_analysis.crop_image" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="afm_learn.domain_analysis.define_percentage_threshold">
+<span class="sig-prename descclassname"><span class="pre">afm_learn.domain_analysis.</span></span><span class="sig-name descname"><span class="pre">define_percentage_threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(2,</span> <span class="pre">98)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/afm_learn/domain_analysis.html#define_percentage_threshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#afm_learn.domain_analysis.define_percentage_threshold" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="afm_learn.domain_analysis.domain_rule">
+<span class="sig-prename descclassname"><span class="pre">afm_learn.domain_analysis.</span></span><span class="sig-name descname"><span class="pre">domain_rule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images_binary_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">viz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/afm_learn/domain_analysis.html#domain_rule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#afm_learn.domain_analysis.domain_rule" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="afm_learn.domain_analysis.find_histogram_peaks">
+<span class="sig-prename descclassname"><span class="pre">afm_learn.domain_analysis.</span></span><span class="sig-name descname"><span class="pre">find_histogram_peaks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_peaks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_prominence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/afm_learn/domain_analysis.html#find_histogram_peaks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#afm_learn.domain_analysis.find_histogram_peaks" title="Link to this definition">#</a></dt>
+<dd><p>Find the largest ‘num_peaks’ peaks of the histogram of an image that are above a certain threshold and have a minimum prominence.
+This method is adjusted to ignore broader, less distinct peaks that do not meet the prominence criterion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>array</em>) – NumPy array of the image.</p></li>
+<li><p><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Number of bins to use for the histogram.</p></li>
+<li><p><strong>num_peaks</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Number of peaks to find.</p></li>
+<li><p><strong>plot_histogram</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether to plot the histogram.</p></li>
+<li><p><strong>threshold_factor</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Factor to multiply with the median to set the frequency threshold.</p></li>
+<li><p><strong>min_prominence</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Minimum prominence required for peaks to be considered.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pixel intensity values corresponding to the peaks.
+peaks_frequencies (list): Counts of pixels at the peaks.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>peaks_values (<a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)">list</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="afm_learn.domain_analysis.shift_peak">
+<span class="sig-prename descclassname"><span class="pre">afm_learn.domain_analysis.</span></span><span class="sig-name descname"><span class="pre">shift_peak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peaks_intensities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'soft'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/afm_learn/domain_analysis.html#shift_peak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#afm_learn.domain_analysis.shift_peak" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="afm_learn.domain_analysis.shift_peak_batch">
+<span class="sig-prename descclassname"><span class="pre">afm_learn.domain_analysis.</span></span><span class="sig-name descname"><span class="pre">shift_peak_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peaks_intensities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'soft'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/afm_learn/domain_analysis.html#shift_peak_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#afm_learn.domain_analysis.shift_peak_batch" title="Link to this definition">#</a></dt>
+<dd><p>Shift the images to align the peaks to the reference peaks found from all images, assuming the images should have two peaks</p>
+<p>Parameters:
+images: np.array, 3D array of images
+peaks_intensities: list, reference peaks intensities
+shift_method: str, ‘soft’ or ‘hard’, ‘soft’ method shifts the image peak based on approximity to reference peak,</p>
+<blockquote>
+<div><p>‘hard’ method shifts the image peak based on the values: higher image peak will be shifted to higher reference peak, lower image peak will be shifted to lower reference peak,</p>
+</div></blockquote>
+<p>Returns:
+images: np.array, 3D array of shifted images</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="afm_learn.domain_analysis.shift_phase">
+<span class="sig-prename descclassname"><span class="pre">afm_learn.domain_analysis.</span></span><span class="sig-name descname"><span class="pre">shift_phase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phase_imgs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LatPhase_imgs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voltage_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_viz_plots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">viz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/afm_learn/domain_analysis.html#shift_phase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#afm_learn.domain_analysis.shift_phase" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="afm_learn.domain_analysis.show_images">
+<span class="sig-prename descclassname"><span class="pre">afm_learn.domain_analysis.</span></span><span class="sig-name descname"><span class="pre">show_images</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_per_row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hist_bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/afm_learn/domain_analysis.html#show_images"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#afm_learn.domain_analysis.show_images" title="Link to this definition">#</a></dt>
+<dd><p>Plots multiple images in grid.</p>
+<p>images
+labels: labels for every images;
+img_per_row: number of images to show per row;
+img_height: height of image in axes;
+show_colorbar: show colorbar;
+clim: int or list of int, value of standard deviation of colorbar range;
+cmap: colormap;
+scale_range: scale image to a range, default is False, if True, scale to 0-1, if a tuple, scale to the range;
+hist_bins: number of bins for histogram;
+show_axis: show axis</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="afm_learn.domain_analysis.show_interactive_image">
+<span class="sig-prename descclassname"><span class="pre">afm_learn.domain_analysis.</span></span><span class="sig-name descname"><span class="pre">show_interactive_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Viridis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clim_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(2,</span> <span class="pre">98)</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/afm_learn/domain_analysis.html#show_interactive_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#afm_learn.domain_analysis.show_interactive_image" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="afm_learn.domain_analysis.show_pfm_images">
+<span class="sig-prename descclassname"><span class="pre">afm_learn.domain_analysis.</span></span><span class="sig-name descname"><span class="pre">show_pfm_images</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imgs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clim_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(2,</span> <span class="pre">98)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/afm_learn/domain_analysis.html#show_pfm_images"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#afm_learn.domain_analysis.show_pfm_images" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="afm-learn-drawing-3d-module">
 <h2>afm_learn.drawing_3d module<a class="headerlink" href="#afm-learn-drawing-3d-module" title="Link to this heading">#</a></h2>
@@ -643,7 +741,20 @@ also be used as template for Python modules.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#afm-learn-afm-image-analyzer-module">afm_learn.afm_image_analyzer module</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#afm-learn-afm-utils-module">afm_learn.afm_utils module</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#afm-learn-afm-viz-module">afm_learn.afm_viz module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#afm-learn-domain-analysis-module">afm_learn.domain_analysis module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-afm_learn.domain_analysis">afm_learn.domain_analysis module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#afm_learn.domain_analysis.convert_binary"><code class="docutils literal notranslate"><span class="pre">convert_binary()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#afm_learn.domain_analysis.crop_image"><code class="docutils literal notranslate"><span class="pre">crop_image()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#afm_learn.domain_analysis.define_percentage_threshold"><code class="docutils literal notranslate"><span class="pre">define_percentage_threshold()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#afm_learn.domain_analysis.domain_rule"><code class="docutils literal notranslate"><span class="pre">domain_rule()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#afm_learn.domain_analysis.find_histogram_peaks"><code class="docutils literal notranslate"><span class="pre">find_histogram_peaks()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#afm_learn.domain_analysis.shift_peak"><code class="docutils literal notranslate"><span class="pre">shift_peak()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#afm_learn.domain_analysis.shift_peak_batch"><code class="docutils literal notranslate"><span class="pre">shift_peak_batch()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#afm_learn.domain_analysis.shift_phase"><code class="docutils literal notranslate"><span class="pre">shift_phase()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#afm_learn.domain_analysis.show_images"><code class="docutils literal notranslate"><span class="pre">show_images()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#afm_learn.domain_analysis.show_interactive_image"><code class="docutils literal notranslate"><span class="pre">show_interactive_image()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#afm_learn.domain_analysis.show_pfm_images"><code class="docutils literal notranslate"><span class="pre">show_pfm_images()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#afm-learn-drawing-3d-module">afm_learn.drawing_3d module</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-afm_learn.skeleton">afm_learn.skeleton module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#afm_learn.skeleton.fib"><code class="docutils literal notranslate"><span class="pre">fib()</span></code></a></li>
