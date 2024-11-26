@@ -25,9 +25,7 @@ class AFMVisualizer:
         if self.colorbar_setting.get('outliers_std', None):  # Ensure key exists
             img = img.copy()
             
-            
             # show_image_stats(img, n_std_list=[1,2,3], bins=100)
-            
             # mean_val = np.mean(img)
             # std_val = np.std(img)
             # lower_bound = mean_val - self.colorbar_setting['outliers_std'] * std_val
@@ -78,14 +76,14 @@ class AFMVisualizer:
             colorbar = fig.colorbar(im, cax=cax, format=formatter)
             
             # Adjust tick padding
-            colorbar.ax.yaxis.set_tick_params(pad=-2.2, labelsize=7, right=False)  # Adjust spacing between ticks and labels
+            colorbar.ax.yaxis.set_tick_params(pad=1, labelsize=7, direction='in', length=2)  # Adjust spacing between ticks and labels
+            # colorbar.ax.yaxis.set_tick_params(pad=-2.2, labelsize=7, right=False)  # Adjust spacing between ticks and labels
             # colorbar.ax.tick_params(direction='in', width=1)
 
             # Set unit label at the top of the colorbar
             cax.set_title(unit, loc='center', pad=1, fontsize=7)  # Adjust fontsize as needed
-            
-
-
+                    
+            # colorbar.ax.tick_params(direction='in')  # Set tick direction to 'in'
 
     def adjust_ticks(self, ax):
         # Remove axis ticks and labels
@@ -120,7 +118,8 @@ class AFMVisualizer:
         if self.scalebar:
             if not isinstance(scan_size, dict):
                 scan_size = convert_scan_setting(scan_size)
-            scalebar(ax, image_size=scan_size['image_size'], scale_size=scan_size['scale_size'], units=scan_size['units'], loc='br')
+            scalebar(ax, image_size=scan_size['image_size'], scale_size=scan_size['scale_size'], 
+                     units=scan_size['units'], loc='br', text_fontsize=9)
     
         # Add colorbar
         if self.colorbar_setting['colorbar_type'] != None:
