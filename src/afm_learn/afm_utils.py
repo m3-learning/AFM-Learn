@@ -3,6 +3,12 @@ import numpy as np
 from igor import binarywave, igorpy
 from matplotlib import pyplot as plt
 
+def load_waves(file_ibw):
+    obj = binarywave.load(file_ibw)
+    labels = obj['wave']['labels']
+    data = obj['wave']['wData']
+    return data, labels
+
     
 def parse_ibw(file, mode=None):
 
