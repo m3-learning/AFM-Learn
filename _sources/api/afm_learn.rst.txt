@@ -36,6 +36,14 @@ afm\_learn.afm\_viz module
    :undoc-members:
    :show-inheritance:
 
+afm\_learn.cmap module
+----------------------
+
+.. automodule:: afm_learn.cmap
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 afm\_learn.domain\_analysis module
 ----------------------------------
 
