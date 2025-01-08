@@ -3,7 +3,6 @@ import numpy as np
 from scipy.signal import find_peaks
 import matplotlib.pyplot as plt
 import plotly.express as px
-from plume_learn.plume_utils.viz import show_images
 
 def domain_rule(images_binary_dict, viz=False):
     shape = images_binary_dict['LatAmplitude'].shape
@@ -127,6 +126,82 @@ def show_pfm_images(imgs, labels, cmap='viridis', clim_threshold=(2, 98), fig_na
         plt.savefig(fig_name, dpi=300)
     plt.show()
 
+
+def show_images(images, labels=None, img_per_row=8, img_height=1, label_size=12, title=None, show_colorbar=False, clim=3, cmap='viridis', scale_range=False, hist_bins=None, show_axis=False, fig=None, axes=None, save_path=None):
+    
+    '''
+    Plots multiple images in grid.
+    
+    images
+    labels: labels for every images;
+    img_per_row: number of images to show per row;
+    img_height: height of image in axes;
+    show_colorbar: show colorbar;
+    clim: int or list of int, value of standard deviation of colorbar range;
+    cmap: colormap;
+    scale_range: scale image to a range, default is False, if True, scale to 0-1, if a tuple, scale to the range;
+    hist_bins: number of bins for histogram;
+    show_axis: show axis
+    '''
+    
+    assert type(images) == list or type(images) == np.ndarray, "do not use torch.tensor for hist"
+    if type(clim) == list:
+        assert len(images) == len(clim), "length of clims is not matched with number of images"
+
+    h = images[0].shape[1] // images[0].shape[0]*img_height + 1
+    if labels == 'index':
+        labels = range(len(images))
+    elif labels == None:
+        labels = ['']*len(images)
+        
+    if isinstance(axes, type(None)):
+        if hist_bins: # add a row for histogram
+            fig, axes = layout_fig(graph=len(images)*2, mod=img_per_row, figsize=(None, img_height*2))
+        else:
+            fig, axes = layout_fig(graph=len(images), mod=img_per_row, figsize=(None, img_height))
+
+    for i, img in enumerate(images):
+
+        if hist_bins:
+            index = i*2
+        else:
+            index = i
+            
+        if isinstance(scale_range, bool): 
+            if scale_range: img = NormalizeData(img)
+                    
+        if labels[i]:
+            axes[index].set_title(labels[i], fontsize=label_size)
+        im = axes[index].imshow(img, cmap=cmap)
+
+        if show_colorbar:
+            m, s = np.mean(img), np.std(img) 
+            if type(clim) == list:
+                im.set_clim(m-clim[i]*s, m+clim[i]*s) 
+            elif type(clim) == int:
+                im.set_clim(m-clim*s, m+clim*s) 
+            # else:
+            #     im.set_clim(0, 1)
+
+            fig.colorbar(im, ax=axes[index])
+            
+        if show_axis:
+            axes[index].tick_params(axis="x",direction="in", top=True)
+            axes[index].tick_params(axis="y",direction="in", right=True)
+        else:
+            axes[index].axis('off')
+
+        if hist_bins:
+            index_hist = index+1
+            h = axes[index_hist].hist(img.flatten(), bins=hist_bins)
+
+        if title:
+            fig.suptitle(title, fontsize=16, y=1.01)
+
+    plt.tight_layout()
+
+
+
 def shift_phase(phase_imgs, LatPhase_imgs, voltage_labels, n_viz_plots=20, viz=True):
 
     # find the peaks in the histogram of the phase images
@@ -139,6 +214,12 @@ def shift_phase(phase_imgs, LatPhase_imgs, voltage_labels, n_viz_plots=20, viz=T
     
     phase_imgs_ = shift_peak_batch(phase_imgs, peaks_intensities, shift_method='soft', debug=False)
     if viz:
+        # fig, axes = layout_fig(graph=len(phase_imgs[::every_frames]), mod=10, figsize=(None, 0.6), layout='tight')
+        # for img, ax in zip(phase_imgs[::every_frames], axes):
+        #     ax.imshow(img, cmap='viridis')
+        # plt.suptitle('Vertical Phase (before)')
+        # plt.show()
+        
         show_images(phase_imgs[::every_frames], img_per_row=10, img_height=0.6, labels=voltage_labels[::every_frames], 
                     show_colorbar=True, title='Vertical Phase (before)', hist_bins=100)
         show_images(phase_imgs_[::every_frames], img_per_row=10, img_height=0.6, labels=voltage_labels[::every_frames], 
