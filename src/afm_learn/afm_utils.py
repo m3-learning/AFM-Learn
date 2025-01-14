@@ -11,7 +11,10 @@ def load_waves(file_ibw):
     data = obj['wave']['wData']
     return data, labels
 
-    
+def define_percentage_threshold(image, percentage=(2, 98)):
+    low, high = np.percentile(image, percentage[0]), np.percentile(image, percentage[1])
+    return low, high
+
 def parse_ibw(file, mode=None):
 
     obj = binarywave.load(file)

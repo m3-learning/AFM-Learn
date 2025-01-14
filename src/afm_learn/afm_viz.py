@@ -5,8 +5,9 @@ import plotly.graph_objects as go
 import seaborn as sns
 import pandas as pd
 from scipy.stats import median_abs_deviation
+
+from afm_learn.afm_utils import convert_with_unit, convert_scan_setting, format_func, define_percentage_threshold
 from m3util.viz.layout import scalebar, layout_fig
-from afm_learn.afm_utils import convert_with_unit, convert_scan_setting, format_func, show_image_stats
 from afm_learn.domain_analysis import find_histogram_peaks
 
 class tip_potisition_analyzer:
@@ -58,6 +59,20 @@ class tip_potisition_analyzer:
         for i, ax in enumerate(axes[n*2:n*3]):
             afm_viz.viz(img=amp_imgs[i], scan_size=scan_size, fig=fig, ax=ax, title=f'amplitudes', cbar_unit='pm')
 
+
+
+def show_pfm_images(imgs, labels, cmap='viridis', clim_threshold=(2, 98), fig_name=None):
+
+    fig, axes = plt.subplots(2, 3, figsize=(15, 8))
+    for i, ax in enumerate(axes.flatten()):
+        clim = define_percentage_threshold(imgs[:,:,i], percentage=clim_threshold)
+        im = ax.imshow(imgs[:,:,i], cmap=cmap, vmin=clim[0], vmax=clim[1])
+        ax.set_title(labels[i])
+        plt.colorbar(im, ax=ax)
+
+    if fig_name is not None:
+        plt.savefig(fig_name, dpi=300)
+    plt.show()
 
 
 class AFMVisualizer:
