@@ -83,36 +83,36 @@ def ICA_analysis(images, n_components=2, n_iter=1000, random_state=0):
 
 def domain_rule(images_binary_dict, viz=False):
     shape = images_binary_dict['LatAmplitude'].shape
-    lat_c_domain, lat_a_domain_c_tilt, vert_a_domain, vert_c_domain_a_tilt = np.zeros(shape), np.zeros(shape), np.zeros(shape), np.zeros(shape)
+    torsion_domain, torsion_domain_noise, vert_defl_buckl_domain, vert_defl_buckl_domain_noise = np.zeros(shape), np.zeros(shape), np.zeros(shape), np.zeros(shape)
     
     for i in range(shape[0]):
         for j in range(shape[1]):
             if images_binary_dict['LatAmplitude'][i,j] == 1:
                 if images_binary_dict['LatPhase'][i,j] == 1:
-                    lat_c_domain[i,j] = 1
+                    torsion_domain[i,j] = 1
                 elif images_binary_dict['LatPhase'][i,j] == 0:
-                    lat_c_domain[i,j] = -1
+                    torsion_domain[i,j] = -1
 
             if images_binary_dict['LatAmplitude'][i,j] == 0:
                 if images_binary_dict['LatPhase'][i,j] == 1:
-                    lat_a_domain_c_tilt[i,j] = 1
+                    torsion_domain_noise[i,j] = 1
                 elif images_binary_dict['LatPhase'][i,j] == 0:
-                    lat_a_domain_c_tilt[i,j] = -1
+                    torsion_domain_noise[i,j] = -1
 
             if images_binary_dict['Amplitude'][i,j] == 1:
                 if images_binary_dict['Phase'][i,j] == 1:
-                    vert_a_domain[i,j] = 1
+                    vert_defl_buckl_domain[i,j] = 1
                 elif images_binary_dict['Phase'][i,j] == 0:
-                    vert_a_domain[i,j] = -1
+                    vert_defl_buckl_domain[i,j] = -1
 
             if images_binary_dict['Amplitude'][i,j] == 0:
                 if images_binary_dict['Phase'][i,j] == 1:
-                    vert_c_domain_a_tilt[i,j] = 1
+                    vert_defl_buckl_domain_noise[i,j] = 1
                 elif images_binary_dict['Phase'][i,j] == 0:
-                    vert_c_domain_a_tilt[i,j] = -1
+                    vert_defl_buckl_domain_noise[i,j] = -1
 
-    domains = [lat_c_domain, vert_c_domain_a_tilt, vert_a_domain, lat_a_domain_c_tilt]
-    labels = ['Lat c Domain', 'Vert c Domain a Tilt?', 'Vert a Domain', 'Lat a Domain c Tilt?']
+    domains = [torsion_domain, torsion_domain_noise, vert_defl_buckl_domain, vert_defl_buckl_domain_noise]
+    labels = ['Torsion', 'Torsion Noise', 'Vert Defl Buckl', 'Vert Defl Buckl Noise']
     clim_labels = [['c-', 0, 'c+'], ['a-', 0, 'a+'], ['a-', 0, 'a+'], ['c-', 0, 'c+']]
 
     if viz:
@@ -125,7 +125,7 @@ def domain_rule(images_binary_dict, viz=False):
             cbar.set_ticks([-1, 0, 1])  # Set the positions of the ticks
             cbar.set_ticklabels(cl)  # Set the labels for the ticks
         # plt.show()
-    return lat_c_domain, lat_a_domain_c_tilt, vert_a_domain, vert_c_domain_a_tilt
+    return domains
 
 
 def convert_binary(image, real_value=False, debug=False):
