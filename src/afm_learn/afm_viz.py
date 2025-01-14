@@ -6,9 +6,59 @@ import seaborn as sns
 import pandas as pd
 from scipy.stats import median_abs_deviation
 
-from m3util.viz.layout import scalebar
 from afm_learn.afm_utils import convert_with_unit, convert_scan_setting, format_func, define_percentage_threshold
+from m3util.viz.layout import scalebar, layout_fig
 from afm_learn.domain_analysis import find_histogram_peaks
+
+class tip_potisition_analyzer:
+    def __init__(self,):
+        pass
+        
+    def show_tune(self, freq, amps, colors, positions):
+        n = len(amps)
+        
+        fig, ax = layout_fig(1, 1, figsize=(n*3*0.9-0.4*(n-1), 2))
+        for amp, color in zip(amps, colors):
+            ax.plot(freq, amp, color=color)
+        plt.xlabel('Frequency (kHz)')
+        plt.ylabel('Amplitude (mV)')
+        plt.xlim(30, 720)
+        plt.legend(positions, loc='upper left')
+        plt.show()
+        
+        fig, axes = layout_fig(2, 2, figsize=(n*3-0.3*(n-2), 2), subplot_style='gridspec', spacing=(0.2, 0.1))
+        for amp, color in zip(amps, colors):
+            axes[0].plot(freq, amp, color=color)
+        axes[0].set_xlabel('Frequency (kHz)')
+        axes[0].set_ylabel('Amplitude (mV)')
+        axes[0].set_xlim(340, 390)
+        axes[0].legend(positions, loc='upper left')
+        
+        for amp, color in zip(amps, colors):
+            axes[1].plot(freq, amp, color=color)
+        axes[1].set_xlabel('Frequency (kHz)')
+        axes[1].set_ylabel('Amplitude (mV)')
+        axes[1].set_xlim(630, 670)
+        axes[1].legend(positions, loc='upper left')
+        plt.show()
+
+    def show_tip_scans(self, tip_imgs, positions, phase_imgs, amp_imgs, scan_size):
+        n = len(tip_imgs)
+
+        fig, axes = layout_fig(n*3, n, figsize=(n*3, 9), subplot_style='gridspec', spacing=(0.1, 0.1))
+        for ax, img, position in zip(axes[:n], tip_imgs, positions):
+            ax.imshow(img)
+            ax.axis('off')
+            ax.set_title(position)
+            
+        afm_viz = AFMVisualizer(colorbar_setting={'colorbar_type': 'percent', 'colorbar_range': (0.2, 99.8), 'outliers_std': 5, 'symmetric_clim':False, 'visible': True}, zero_mean=False, scalebar=True, debug=True)
+        
+        for i, ax in enumerate(axes[n:n*2]):
+            afm_viz.viz(img=phase_imgs[i], scan_size=scan_size, fig=fig, ax=ax, title=f'phase', cbar_unit='deg')
+        
+        for i, ax in enumerate(axes[n*2:n*3]):
+            afm_viz.viz(img=amp_imgs[i], scan_size=scan_size, fig=fig, ax=ax, title=f'amplitudes', cbar_unit='pm')
+
 
 
 def show_pfm_images(imgs, labels, cmap='viridis', clim_threshold=(2, 98), fig_name=None):
@@ -34,7 +84,7 @@ class AFMVisualizer:
         self.debug = debug
             
     def add_colorbar(self, img, im, fig, ax, unit="nm"):
-
+        
         # Handle outliers: Clip to mean ± n_std * std
         if self.colorbar_setting.get('outliers_std', None):  # Ensure key exists
             img = img.copy()
@@ -52,8 +102,8 @@ class AFMVisualizer:
             lower_bound = median_val - self.colorbar_setting['outliers_std'] * mad_val
             upper_bound = median_val + self.colorbar_setting['outliers_std'] * mad_val
             img = np.clip(img, lower_bound, upper_bound)
-            img -= np.median(img)
-                    
+            # img -= np.median(img)
+            
             # show_image_stats(img, n_std_list=[1,2,3], bins=100)
                     
         # Set color limits based on colorbar type
@@ -62,6 +112,7 @@ class AFMVisualizer:
         
         elif self.colorbar_setting['colorbar_type'] == 'percent':
             vmin, vmax = np.percentile(img, self.colorbar_setting['colorbar_range'])
+            
             if self.colorbar_setting['symmetric_clim']:
                 absmax = np.max(np.abs([vmin, vmax]))
                 vmin, vmax = -absmax, absmax
@@ -81,12 +132,16 @@ class AFMVisualizer:
         else:
             if isinstance(self.colorbar_setting['colorbar_range'], (tuple, list)):
                 im.set_clim(self.colorbar_setting['colorbar_range'])
-
+                
+        from functools import partial
+        
         if self.colorbar_setting['visible']:
             # Add colorbar to the figure
             divider = make_axes_locatable(ax)
             cax = divider.append_axes("right", size="5%", pad=0.05)
-            formatter = plt.FuncFormatter(format_func)
+            formatter = plt.FuncFormatter(lambda value, tick_number: format_func(value, unit=unit))
+
+            # formatter = plt.FuncFormatter(partial(format_func, unit=unit))
             colorbar = fig.colorbar(im, cax=cax, format=formatter)
             
             # Adjust tick padding
@@ -96,7 +151,7 @@ class AFMVisualizer:
 
             # Set unit label at the top of the colorbar
             cax.set_title(unit, loc='center', pad=1, fontsize=7)  # Adjust fontsize as needed
-                    
+
             # colorbar.ax.tick_params(direction='in')  # Set tick direction to 'in'
 
     def adjust_ticks(self, ax):
@@ -117,7 +172,7 @@ class AFMVisualizer:
                 img -= np.mean(img)
         return img
 
-    def viz(self, img, scan_size, fig=None, ax=None, figsize=(6, 4), title=None):
+    def viz(self, img, scan_size, fig=None, ax=None, figsize=(6, 4), title=None, cbar_unit="nm"):
         
         # Preprocess image if needed
         img = self.preprocess_image(img)
@@ -137,7 +192,7 @@ class AFMVisualizer:
     
         # Add colorbar
         if self.colorbar_setting['colorbar_type'] != None:
-            self.add_colorbar(img, im, fig, ax)
+            self.add_colorbar(img, im, fig, ax, unit=cbar_unit)
 
         # Adjust ticks and labels
         self.adjust_ticks(ax)

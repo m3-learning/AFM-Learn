@@ -6,6 +6,18 @@ import scipy
 from scipy import signal
 from afm_learn.afm_utils import parse_ibw
 
+
+def calculate_height_profile(img, point1, point2, distance_per_pixel=None):
+    points = bresenham_line(point1, point2)
+    values = np.array([img[row, col] for col, row in points])
+    if distance_per_pixel:
+        distance = np.sqrt((point2[0] - point1[0])**2 + (point2[1] - point1[1])**2)
+        x = np.arange(0, distance, len(values))
+    else:
+        x = np.arange(len(values))
+    return x, values
+
+
 def fft2d(image, viz=True):
     """
     Compute the 2D Fast Fourier Transform (FFT) of an image.

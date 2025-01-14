@@ -4,6 +4,83 @@ from scipy.signal import find_peaks
 import matplotlib.pyplot as plt
 import plotly.express as px
 from afm_utils import define_percentage_threshold 
+from sklearn.decomposition import FastICA
+from sklearn.metrics import mean_squared_error
+
+
+def evaluate_ICA_n_components(images):
+    
+    # Flatten the images
+    if len(images.shape) == 3:
+        H, W, n_imgs = images.shape
+        images_flat = images.reshape(-1, n_imgs)
+    else:
+        raise ValueError('Input images must be 3D with shape (H, W, n_imgs)')
+    
+    # Initialize FastICA with the desired number of components
+    errors = []
+    n_components_range = range(1, n_imgs + 1)
+
+    for n in n_components_range:
+        ica = FastICA(n_components=n, random_state=42)
+        X_reconstructed = ica.fit_transform(images_flat) @ ica.mixing_.T  # Reconstruct data
+        error = mean_squared_error(images_flat, X_reconstructed)
+        errors.append(error)
+
+    # Plot reconstruction error
+    plt.figure(figsize=(5, 3))
+    plt.plot(n_components_range, errors, marker='o')
+    plt.xlabel("Number of Components")
+    plt.ylabel("Reconstruction Error")
+    plt.title("ICA - Reconstruction Error")
+    plt.show()
+    
+    return errors
+
+
+    # # Calculate the first derivative of errors
+    # error_diffs = np.diff(errors)
+
+    # # Find the elbow point: the largest drop
+    # elbow_point = np.argmin(error_diffs) + 1  # +1 because diff reduces length by 1
+    # print(f"Elbow point (optimal components): {elbow_point}")
+
+    # # Suggested number of components
+    # # optimal_components = n_components_range[np.argmin(errors)]
+    # # print(f"Optimal number of components: {optimal_components}")
+    
+    # # Compute percentage change in reconstruction error
+    # percent_changes = np.abs(np.diff(errors) / errors[:-1]) * 100
+
+    # # Set a threshold for significant improvement
+    # threshold = 1  # Stop when improvement is less than 1%
+    # optimal_components = next(
+    #     (i + 1 for i, change in enumerate(percent_changes) if change < threshold), len(errors)
+    # )
+    # print(f"Optimal number of components based on {threshold}% threshold: {optimal_components}")
+
+        
+
+def ICA_analysis(images, n_components=2, n_iter=1000, random_state=0):
+    
+    # Flatten the images
+    if len(images.shape) == 3:
+        H, W, n_imgs = images.shape
+        images_flat = images.reshape(-1, n_imgs)
+    else:
+        raise ValueError('Input images must be 3D with shape (H, W, n_imgs)')
+    
+    # Initialize FastICA with the desired number of components
+    n_components = n_components  # You can adjust this or set it to None
+    ica = FastICA(n_components=n_components, max_iter=n_iter, random_state=random_state)
+
+    # Fit and transform the data
+    S_ = ica.fit_transform(images_flat)  # Reconstructed signals
+    A_ = ica.mixing_  # Mixing matrix
+    images_ICA = S_.reshape(H, W, n_components)
+
+    return images_ICA
+
 
 def domain_rule(images_binary_dict, viz=False):
     shape = images_binary_dict['LatAmplitude'].shape
