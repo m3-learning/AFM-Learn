@@ -3,7 +3,10 @@ import numpy as np
 from igor import binarywave, igorpy
 from matplotlib import pyplot as plt
 
-    
+def define_percentage_threshold(image, percentage=(2, 98)):
+    low, high = np.percentile(image, percentage[0]), np.percentile(image, percentage[1])
+    return low, high
+
 def parse_ibw(file, mode=None):
 
     obj = binarywave.load(file)

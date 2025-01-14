@@ -3,6 +3,7 @@ import numpy as np
 from scipy.signal import find_peaks
 import matplotlib.pyplot as plt
 import plotly.express as px
+from afm_utils import define_percentage_threshold 
 
 def domain_rule(images_binary_dict, viz=False):
     shape = images_binary_dict['LatAmplitude'].shape
@@ -102,9 +103,6 @@ def show_interactive_image(image, cmap='Viridis', clim_threshold=(2, 98), **kwar
     fig.update_layout(margin=dict(l=0, r=0, t=0, b=0), paper_bgcolor='white', plot_bgcolor='white')
     fig.show()
 
-def define_percentage_threshold(image, percentage=(2, 98)):
-    low, high = np.percentile(image, percentage[0]), np.percentile(image, percentage[1])
-    return low, high
 
 def crop_image(image, cropx=None, cropy=None):
     if cropx is not None:
@@ -112,19 +110,6 @@ def crop_image(image, cropx=None, cropy=None):
     if cropy is not None:
         image = image[:,cropx[0]:cropx[1]]
     return image
-
-def show_pfm_images(imgs, labels, cmap='viridis', clim_threshold=(2, 98), fig_name=None):
-
-    fig, axes = plt.subplots(2, 3, figsize=(15, 8))
-    for i, ax in enumerate(axes.flatten()):
-        clim = define_percentage_threshold(imgs[:,:,i], percentage=clim_threshold)
-        im = ax.imshow(imgs[:,:,i], cmap=cmap, vmin=clim[0], vmax=clim[1])
-        ax.set_title(labels[i])
-        plt.colorbar(im, ax=ax)
-
-    if fig_name is not None:
-        plt.savefig(fig_name, dpi=300)
-    plt.show()
 
 
 def show_images(images, labels=None, img_per_row=8, img_height=1, label_size=12, title=None, show_colorbar=False, clim=3, cmap='viridis', scale_range=False, hist_bins=None, show_axis=False, fig=None, axes=None, save_path=None):
