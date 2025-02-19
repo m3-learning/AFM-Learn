@@ -9,69 +9,69 @@ afm\_learn.MakeVideo module
 
 .. automodule:: afm_learn.MakeVideo
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 afm\_learn.afm\_image\_analyzer module
 --------------------------------------
 
 .. automodule:: afm_learn.afm_image_analyzer
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 afm\_learn.afm\_utils module
 ----------------------------
 
 .. automodule:: afm_learn.afm_utils
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 afm\_learn.afm\_viz module
 --------------------------
 
 .. automodule:: afm_learn.afm_viz
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 afm\_learn.cmap module
 ----------------------
 
 .. automodule:: afm_learn.cmap
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 afm\_learn.domain\_analysis module
 ----------------------------------
 
 .. automodule:: afm_learn.domain_analysis
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 afm\_learn.drawing\_3d module
 -----------------------------
 
 .. automodule:: afm_learn.drawing_3d
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 afm\_learn.skeleton module
 --------------------------
 
 .. automodule:: afm_learn.skeleton
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Module contents
 ---------------
 
 .. automodule:: afm_learn
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
