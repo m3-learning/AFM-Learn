@@ -3,7 +3,7 @@ import numpy as np
 from scipy.signal import find_peaks
 import matplotlib.pyplot as plt
 import plotly.express as px
-from afm_utils import define_percentage_threshold 
+from afm_learn.afm_utils import define_percentage_threshold 
 from sklearn.decomposition import FastICA
 from sklearn.metrics import mean_squared_error
 
