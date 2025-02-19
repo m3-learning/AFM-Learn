@@ -11,6 +11,12 @@ from m3util.viz.layout import scalebar, layout_fig
 from afm_learn.domain_analysis import find_histogram_peaks
 
 class tip_potisition_analyzer:
+    '''
+    This class is used to visualize the tip position and the phase and amplitude images of the tip scans.
+    
+    '''
+    
+    
     def __init__(self,):
         pass
         
