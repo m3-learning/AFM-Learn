@@ -4,6 +4,67 @@ from igor import binarywave, igorpy
 from matplotlib import pyplot as plt
 from matplotlib.cm import get_cmap
 from scipy.stats import scoreatpercentile
+from scipy.ndimage import uniform_filter, label
+from skimage.measure import regionprops
+
+def detect_dark_holes_local_diff(
+    image: np.ndarray,
+    window_size: int = 9,
+    threshold: float = 0.03,
+    show: bool = True   
+):
+    """
+    Detects dark spots in an image using local mean subtraction.
+    
+    Parameters:
+        image (np.ndarray): Input 2D image array.
+        window_size (int): Size of the neighborhood window.
+        threshold (float): Threshold for difference from local mean.
+        show (bool): Whether to display the original and mask images.
+
+    Returns:
+        dict: Statistics including hole count, total area, average area, density, and mask.
+    """
+    # Normalize image to [0, 1]
+    norm_image = (image - np.min(image)) / (np.max(image) - np.min(image))
+
+    # Local mean subtraction
+    local_mean = uniform_filter(norm_image, size=window_size)
+    diff = local_mean - norm_image
+    mask = diff > threshold  # Dark dips are brighter in difference map
+
+    # Label connected dark regions
+    labeled_mask, num_features = label(mask)
+    props = regionprops(labeled_mask)
+
+    # Compute statistics
+    total_area = np.sum(mask)
+    avg_area = total_area / num_features if num_features > 0 else 0
+    image_area = image.shape[0] * image.shape[1]
+    density = num_features / image_area
+
+    # Visualization
+    if show:
+        fig, ax = plt.subplots(1, 2, figsize=(10, 4))
+        ax[0].imshow(norm_image, cmap='gray')
+        ax[0].set_title("Normalized Image")
+        ax[0].axis('off')
+        
+        ax[1].imshow(norm_image, cmap='gray')
+        ax[1].contour(mask, colors='red', linewidths=0.5)
+        ax[1].set_title("Detected Dark Holes (Local Diff)")
+        ax[1].axis('off')
+        plt.tight_layout()
+        plt.show()
+
+    return {
+        'mask': mask,
+        'hole_count': num_features,
+        'total_area': total_area,
+        'avg_area': avg_area,
+        'density': density
+    }
+
 
 def load_waves(file_ibw):
     obj = binarywave.load(file_ibw)
