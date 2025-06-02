@@ -1,27 +1,12 @@
-import sys
-
-if sys.version_info[:2] >= (3, 8):
-    # TODO: Import directly (no need for conditional) when `python_requires = >= 3.8`
-    from importlib.metadata import PackageNotFoundError, version  # pragma: no cover
-else:
-    from importlib_metadata import PackageNotFoundError, version  # pragma: no cover
-
-try:
-    # Change here if project is renamed and does not equal the package name
-    dist_name = "AFM-Learn"
-    __version__ = version(dist_name)
-except PackageNotFoundError:  # pragma: no cover
-    __version__ = "unknown"
-from afm_learn import MakeVideo
 from afm_learn import afm_image_analyzer
 from afm_learn import afm_utils
 from afm_learn import afm_viz
 from afm_learn import cmap
 from afm_learn import domain_analysis
 from afm_learn import drawing_3d
+from afm_learn import makevideo
 from afm_learn import skeleton
 
-from afm_learn.MakeVideo import (VideoMaker, generate_z_voltages,)
 from afm_learn.afm_image_analyzer import (afm_RMS_roughness, afm_analyzer,
                                           afm_line_profiler, bresenham_line,
                                           calculate_height_profile,
@@ -44,23 +29,23 @@ from afm_learn.domain_analysis import (ICA_analysis, convert_binary,
                                        shift_peak_batch, shift_phase,
                                        show_images, show_interactive_image,)
 from afm_learn.drawing_3d import (draw_box, draw_surface, sphere_to_surface,)
+from afm_learn.makevideo import (VideoMaker, generate_z_voltages,)
 from afm_learn.skeleton import (fib, main, parse_args, run, setup_logging,)
 
-__all__ = ['AFMVisualizer', 'ICA_analysis', 'MakeVideo',
-           'ScientificColourMaps', 'VideoMaker', 'afm_RMS_roughness',
-           'afm_analyzer', 'afm_image_analyzer', 'afm_line_profiler',
-           'afm_utils', 'afm_viz', 'bresenham_line',
-           'calculate_height_profile', 'cmap', 'convert_binary',
-           'convert_scan_setting', 'convert_with_unit', 'crop_image',
-           'define_percentage_threshold', 'define_white_viridis',
+__all__ = ['AFMVisualizer', 'ICA_analysis', 'ScientificColourMaps',
+           'VideoMaker', 'afm_RMS_roughness', 'afm_analyzer',
+           'afm_image_analyzer', 'afm_line_profiler', 'afm_utils', 'afm_viz',
+           'bresenham_line', 'calculate_height_profile', 'cmap',
+           'convert_binary', 'convert_scan_setting', 'convert_with_unit',
+           'crop_image', 'define_percentage_threshold', 'define_white_viridis',
            'detect_dark_holes_local_diff', 'df_scatter', 'domain_analysis',
            'domain_rule', 'draw_box', 'draw_surface', 'drawing_3d',
            'evaluate_ICA_n_components', 'fft2d', 'fib', 'fill_holes_with_mean',
            'find_histogram_peaks', 'fit_background', 'flexible_round',
            'format_func', 'generate_z_voltages', 'load_waves', 'main',
-           'map_roughness', 'parse_args', 'parse_ibw', 'polyfit2d',
-           'remove_surface_particles', 'run', 'setup_logging', 'shift_peak',
-           'shift_peak_batch', 'shift_phase', 'show_image_stats',
+           'makevideo', 'map_roughness', 'parse_args', 'parse_ibw',
+           'polyfit2d', 'remove_surface_particles', 'run', 'setup_logging',
+           'shift_peak', 'shift_peak_batch', 'shift_phase', 'show_image_stats',
            'show_images', 'show_interactive_image', 'show_peaks',
            'show_pfm_images', 'skeleton', 'sphere_to_surface',
            'tip_potisition_analyzer', 'violinplot_roughness']
