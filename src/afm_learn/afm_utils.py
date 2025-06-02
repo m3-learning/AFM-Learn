@@ -1,6 +1,6 @@
 import re
 import numpy as np
-from afm_learn.igor.igor import binarywave
+from afm_learn.igor import binarywave
 from matplotlib import pyplot as plt
 from matplotlib.cm import get_cmap
 from scipy.stats import scoreatpercentile
