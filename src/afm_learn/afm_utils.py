@@ -1,12 +1,13 @@
 import re
 import numpy as np
-from afm_learn.igor.igor import binarywave
 from matplotlib import pyplot as plt
 from matplotlib.cm import get_cmap
 from scipy.stats import scoreatpercentile
+from afm_learn.igor.igor import load as load_ibw
+# from igor import binarywave
 
 def load_waves(file_ibw):
-    obj = binarywave.load(file_ibw)
+    obj = load_ibw(file_ibw)
     labels = obj['wave']['labels']
     data = obj['wave']['wData']
     return data, labels
@@ -17,7 +18,7 @@ def define_percentage_threshold(image, percentage=(2, 98)):
 
 def parse_ibw(file, mode=None):
 
-    obj = binarywave.load(file)
+    obj = load_ibw(file)
     imgs = obj['wave']['wData']
 
     # swap h and w to match the software

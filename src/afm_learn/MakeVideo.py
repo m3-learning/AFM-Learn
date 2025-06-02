@@ -4,9 +4,6 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib.animation import FFMpegWriter
 from matplotlib import gridspec
-from cmap import ScientificColourMaps
-from scipy.signal import find_peaks
-from Viz import show_images
 
 def generate_z_voltages(voltage_start, voltage_amplitude, voltage_step, frames_per_voltage=1, repeat_times=1, voltage_end=0, viz=False):
     voltages = np.concatenate([np.arange(voltage_start, voltage_amplitude, voltage_step), np.arange(voltage_amplitude, -voltage_amplitude, -voltage_step), np.arange(-voltage_amplitude, voltage_end+voltage_step, voltage_step)])
