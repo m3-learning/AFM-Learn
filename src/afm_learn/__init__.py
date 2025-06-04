@@ -5,7 +5,6 @@ from afm_learn import cmap
 from afm_learn import domain_analysis
 from afm_learn import drawing_3d
 from afm_learn import makevideo
-from afm_learn import skeleton
 
 from afm_learn.afm_image_analyzer import (afm_RMS_roughness, afm_analyzer,
                                           afm_line_profiler, bresenham_line,
