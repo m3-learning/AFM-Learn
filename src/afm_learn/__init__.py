@@ -29,7 +29,6 @@ from afm_learn.domain_analysis import (ICA_analysis, convert_binary,
                                        show_images, show_interactive_image,)
 from afm_learn.drawing_3d import (draw_box, draw_surface, sphere_to_surface,)
 from afm_learn.makevideo import (VideoMaker, generate_z_voltages,)
-from afm_learn.skeleton import (fib, main, parse_args, run, setup_logging,)
 
 __all__ = ['AFMVisualizer', 'ICA_analysis', 'ScientificColourMaps',
            'VideoMaker', 'afm_RMS_roughness', 'afm_analyzer',
